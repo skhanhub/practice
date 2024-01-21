@@ -5,10 +5,10 @@ import routes from "./routes/root";
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware";
 import notFoundMiddleware from "./middleware/notFoundMiddleware";
 import createLogger from "./services/logger/createLogger";
-import DB from "./db/db";
+import DB, { IDB } from "./db/db";
 
 
-const initServer = async () => {
+const initServer = async (db: IDB) => {
     const app = express();
 
     app.use(morganLogger("combined"));
@@ -25,8 +25,8 @@ const initServer = async () => {
     app.use(errorHandlerMiddleware);
 
     const logger = createLogger();
-    const db = DB.getInstance();
-    await db.authenticate();
+
+    await db.initDB();
     logger.info("connected to db");
 
     return app;
@@ -37,7 +37,9 @@ export const startServer = async (port: string) => {
     const logger = createLogger();
     try {
 
-        const app = await initServer();
+        const db = new DB();
+
+        const app = await initServer(db);
 
         await app.listen(port);
 

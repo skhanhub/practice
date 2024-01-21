@@ -16,7 +16,7 @@ export default class ProductController {
         };
 
         const option = await productsOptionRepository.Create(newProductOption);
-        res.location(`${req.originalUrl}/${option.get().id.toString()}`);
+        res.location(`${req.originalUrl}/${option.id.toString()}`);
         res.status(StatusCodes.CREATED).json(getReasonPhrase(StatusCodes.CREATED));
 
     }

@@ -10,7 +10,7 @@ export default class ProductController {
 
         const product = await productRepository.Create(req.body);
 
-        res.location(`${req.originalUrl}/${product.get().id.toString()}`);
+        res.location(`${req.originalUrl}/${product.id.toString()}`);
         res.status(StatusCodes.CREATED).json("created");
 
     }

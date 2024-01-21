@@ -3,18 +3,18 @@ import path from "path";
 import Product from '../models/product.model';
 import ProductOption from '../models/productOption.model';
 
+class DBSingleton {
+    private static _instance: Sequelize;
 
-export interface IDB {
-    initDB(): Promise<void>;
-}
+    private constructor() {
 
+    }
 
-class DB implements IDB {
-
-    db: Sequelize;
-
-    constructor() {
-        this.db = new Sequelize({
+    static async getInstance() {
+        if (this._instance) {
+            return this._instance;
+        }
+        this._instance = new Sequelize({
             storage: process.env.DB_PATH || path.join(__filename, '../../../Test_Data/products.db'),
             dialect: 'sqlite',
             logging: false,
@@ -24,13 +24,7 @@ class DB implements IDB {
             },
 
         });
+        this._instance.addModels([Product, ProductOption]);
+        return await this._instance.sync({ alter: true });
     }
-
-    async initDB(): Promise<void> {
-        this.db.addModels([Product, ProductOption]);
-        await this.db.sync({ alter: true });
-        await this.db.authenticate();
-    }
-
 }
-export default DB;

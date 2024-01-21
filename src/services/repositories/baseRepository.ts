@@ -1,7 +1,7 @@
 import { ForeignKeyConstraintError, ModelStatic, ValidationError } from "sequelize";
 import BadRequestError from "../../errors/BadRequestError";
-import conflictError from "../../errors/ConflictError";
 import ConflictError from "../../errors/ConflictError";
+import { INVALID_ID } from "../../consts/errorMessages";
 
 
 interface IBaseRepository {
@@ -45,7 +45,7 @@ export default class BaseRepository implements IBaseRepository {
                 throw new BadRequestError(firstError!.message);
             }
             if (error instanceof ForeignKeyConstraintError) {
-                throw new BadRequestError("Invalid Id");
+                throw new BadRequestError(INVALID_ID);
             }
 
             throw error;

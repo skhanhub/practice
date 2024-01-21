@@ -8,7 +8,7 @@ describe("Checks if GUID is valid", () => {
         ["22b276b5-3136-4d3f-921a-8240b8326529", true],
         ["8f262ba4-e94e-4fc3-9846-c8f1636d8dae", true]
     ])
-        ("should return %s for %s", (GUID, expected) => {
+        ("for input %s the output should be %s", (GUID, expected) => {
             const actual = isGuid(GUID);
 
             expect(actual).toBe(expected);

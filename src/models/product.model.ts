@@ -2,10 +2,18 @@ import { UUIDV4 } from 'sequelize';
 import { Table, Column, Model, HasMany, IsUUID, PrimaryKey, Default, Unique, BelongsTo, NotNull, DataType } from 'sequelize-typescript';
 import ProductOption from './productOption.model';
 
+export interface IProduct {
+    id: string;
+    name: string;
+    description: string;
+    price: number;
+    deliveryPrice: number;
+}
+
 @Table({
     tableName: "product",
 })
-export default class Product extends Model {
+export default class Product extends Model implements IProduct {
     @IsUUID(4)
     @PrimaryKey
     @Unique
