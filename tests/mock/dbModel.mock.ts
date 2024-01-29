@@ -1,6 +1,6 @@
-import { IProduct } from "../../src/models/product.model";
+import Product from "../../src/domain/product";
 
-export const products: IProduct[] = [{
+export const products: Product[] = [{
     id: "261d2632-0a82-44fc-b577-67ec013560a1",
     name: "Pen",
     description: "Very good",

@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize-typescript';
 import path from "path";
-import Product from '../models/product.model';
-import ProductOption from '../models/productOption.model';
+import ProductModel from './models/product.model';
+import ProductOptionModel from './models/productOption.model';
 
 
 export interface IDB {
@@ -27,7 +27,7 @@ class DB implements IDB {
     }
 
     async initDB(): Promise<void> {
-        this.db.addModels([Product, ProductOption]);
+        this.db.addModels([ProductModel, ProductOptionModel]);
         await this.db.sync({ alter: true });
         await this.db.authenticate();
     }

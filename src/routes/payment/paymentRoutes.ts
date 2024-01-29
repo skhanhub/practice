@@ -1,10 +1,16 @@
-import express from "express";
+import express, { Router } from "express";
 import PaymentController from "../../controllers/paymentController";
 
 
-const router = express.Router();
+const getPaymentRouter = (paymentController: PaymentController): Router => {
+    const router = express.Router();
 
-router.route("/").post(PaymentController.makePayment);
-router.route("/").get(PaymentController.getPaymentTypes);
+    router.route("/").post((req, res) => paymentController.makePayment(req, res));
+    router.route("/").get((req, res) => paymentController.getPaymentTypes(req, res));
 
-export default router;
+    return router
+}
+
+
+
+export default getPaymentRouter;

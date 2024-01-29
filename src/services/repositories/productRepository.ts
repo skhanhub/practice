@@ -1,30 +1,35 @@
-import { col, fn, where } from "sequelize";
-import Product from "../../models/product.model";
-import BaseRepository from "./baseRepository";
-import ProductOption from "../../models/productOption.model";
+import { ModelStatic, col, fn, where } from "sequelize";
+import BaseRepository, { IBaseRepository } from "./baseRepository";
+import ProductOptionModel from "../../db/models/productOption.model";
+import Product from "../../domain/product";
 
+export interface IProductRepository extends IBaseRepository<Product> {
+    GetById(id: string): Promise<Product>;
+    GetWithOptions(): Promise<Product[]>;
+    FilterProductByName(name: string): Promise<Product[]>;
+}
+export default class ProductRepository extends BaseRepository<Product> implements IProductRepository {
 
-export default class ProductRepository extends BaseRepository {
-    constructor() {
-        super(Product);
+    constructor(ProductModel: ModelStatic<any>) {
+        super(ProductModel);
     }
 
-    async GetById(id: string) {
+    async GetById(id: string): Promise<Product> {
         return await this.DbModel.findOne({
             where: { id },
-            include: ProductOption
+            include: ProductOptionModel
         });
     }
 
-    async GetWithOptions() {
-        return await this.DbModel.findAll({ include: ProductOption });
+    async GetWithOptions(): Promise<Product[]> {
+        return await this.DbModel.findAll({ include: ProductOptionModel });
     }
-    async FilterProductByName(name: string) {
+    async FilterProductByName(name: string): Promise<Product[]> {
         return await this.DbModel.findAll({
             where: {
                 name: where(fn('LOWER', col('Name')), 'LIKE', `%${name}%`)
             },
-            include: ProductOption
+            include: ProductOptionModel
         });
     }
 }

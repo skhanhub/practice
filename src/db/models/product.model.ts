@@ -1,19 +1,11 @@
 import { UUIDV4 } from 'sequelize';
 import { Table, Column, Model, HasMany, IsUUID, PrimaryKey, Default, Unique, BelongsTo, NotNull, DataType } from 'sequelize-typescript';
-import ProductOption from './productOption.model';
-
-export interface IProduct {
-    id: string;
-    name: string;
-    description: string;
-    price: number;
-    deliveryPrice: number;
-}
+import ProductOptionModel from './productOption.model';
 
 @Table({
     tableName: "product",
 })
-export default class Product extends Model implements IProduct {
+export default class ProductModel extends Model {
     @IsUUID(4)
     @PrimaryKey
     @Unique
@@ -45,10 +37,10 @@ export default class Product extends Model implements IProduct {
     })
     deliveryPrice!: number;
 
-    @HasMany(() => ProductOption, {
+    @HasMany(() => ProductOptionModel, {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
         hooks: true
     })
-    productOption?: ProductOption[];
+    productOption?: ProductOptionModel[];
 }

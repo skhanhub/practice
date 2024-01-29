@@ -1,11 +1,17 @@
-import ProductOption from "../../models/productOption.model";
-import BaseRepository from "./baseRepository";
+import { ModelStatic } from "sequelize/types/model";
+import BaseRepository, { IBaseRepository } from "./baseRepository";
+import ProductOption from "../../domain/productOption";
 
-export default class ProductsOptionRepository extends BaseRepository {
-    constructor() {
-        super(ProductOption);
+export interface IProductOptionRepository extends IBaseRepository<ProductOption> {
+    GetProductOptions(productId: string): Promise<ProductOption[]>;
+    GetProductOptionById(productId: string, optionId: string): Promise<ProductOption>;
+}
+
+export default class ProductsOptionRepository extends BaseRepository<ProductOption> implements IProductOptionRepository {
+    constructor(ProductOptionModel: ModelStatic<any>) {
+        super(ProductOptionModel);
     }
-    async GetProductOptions(productId: string) {
+    async GetProductOptions(productId: string): Promise<ProductOption[]> {
 
         return await this.DbModel.findAll({
             where: {
@@ -16,7 +22,7 @@ export default class ProductsOptionRepository extends BaseRepository {
 
     }
 
-    async GetProductOptionById(productId: string, optionId: string) {
+    async GetProductOptionById(productId: string, optionId: string): Promise<ProductOption> {
         return await this.DbModel.findOne({
             where: {
                 productId,

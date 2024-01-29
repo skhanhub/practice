@@ -4,34 +4,34 @@ import ConflictError from "../../errors/ConflictError";
 import { INVALID_ID } from "../../consts/errorMessages";
 
 
-interface IBaseRepository {
-    Get(): Promise<any[]>;
-    GetById(id: string): Promise<any>;
-    Create(newData: any): Promise<any>;
+export interface IBaseRepository<T> {
+    Get(): Promise<T[]>;
+    GetById(id: string): Promise<T>;
+    Create(newData: T): Promise<T>;
     DeleteById(id: string): Promise<number>;
     Update(id: string, updatedData: Body): Promise<number>;
     // UpdateOrCreate(): Promise<any[]>;
 }
 
 
-export default class BaseRepository implements IBaseRepository {
+export default class BaseRepository<T> implements IBaseRepository<T> {
     protected DbModel: ModelStatic<any>;
 
     constructor(DbModel: ModelStatic<any>) {
         this.DbModel = DbModel;
     }
 
-    async Get() {
+    async Get(): Promise<T[]> {
         return await this.DbModel.findAll();
     }
 
-    async GetById(id: string) {
+    async GetById(id: string): Promise<T> {
         return await this.DbModel.findOne({
             where: { id }
         });
     }
 
-    async Create(newData: any) {
+    async Create(newData: any): Promise<T> {
         try {
 
             return await this.DbModel.create(newData);
@@ -52,7 +52,7 @@ export default class BaseRepository implements IBaseRepository {
         }
     }
 
-    async DeleteById(id: string) {
+    async DeleteById(id: string): Promise<number> {
 
         return await this.DbModel.destroy({ where: { id }, cascade: true });
     }

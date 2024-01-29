@@ -20,7 +20,7 @@ interface IBody extends IPaymentParams {
 };
 
 export default class PaymentController {
-    static getPaymentTypes(req: express.Request, res: express.Response) {
+    getPaymentTypes(req: express.Request, res: express.Response) {
         const paymentTypes = Object.values(PaymentTypes);
 
         res.send({
@@ -28,7 +28,7 @@ export default class PaymentController {
         });
     }
 
-    static async makePayment(req: express.Request, res: express.Response): Promise<void> {
+    async makePayment(req: express.Request, res: express.Response): Promise<void> {
         const body: IBody = req.body;
 
         const paymentInput = await validateMakePaymentInputs(body);
