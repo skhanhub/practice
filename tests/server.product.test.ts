@@ -11,6 +11,8 @@ import ProductsOptionRepository from "../src/services/repositories/productOption
 import ProductRepository from "../src/services/repositories/productRepository";
 import CreateWorkerFindPrimeNumber from "../src/worker/findPrimeNumber/createWorkerFindPrimeNumber";
 import PrimeController from "../src/controllers/primeController";
+import getAPIClient from "../src/services/apiClient/getAPIClient";
+import TodoController from "../src/controllers/todoController";
 
 // jest.mock('../src/models/product.model',
 //     () => {
@@ -44,27 +46,30 @@ describe("test product routes", () => {
         const productModelMock = {
             findAll: findAllMock,
             create: createMock
-        }
+        };
 
         const productOptionModelMock = {
             findAll: findAllMock,
             create: createMock
-        }
-        const productRepository = new ProductRepository(productModelMock as any)
-        const productOptionRepository = new ProductsOptionRepository(productOptionModelMock as any)
+        };
+        const productRepository = new ProductRepository(productModelMock as any);
+        const productOptionRepository = new ProductsOptionRepository(productOptionModelMock as any);
 
-        const createWorker = new CreateWorkerFindPrimeNumber()
+        const createWorker = new CreateWorkerFindPrimeNumber();
+        const apiClient = getAPIClient("https://test.com");
 
-        const paymentController = new PaymentController()
-        const productController = new ProductController(productRepository)
-        const productOptionController = new ProductOptionController(productOptionRepository)
-        const primeController = new PrimeController(createWorker, 3)
+        const paymentController = new PaymentController();
+        const productController = new ProductController(productRepository);
+        const productOptionController = new ProductOptionController(productOptionRepository);
+        const primeController = new PrimeController(createWorker, 3);
+        const todoController = new TodoController(apiClient);
 
         app = await initServer(db, {
             paymentController,
             productController,
             productOptionController,
-            primeController
+            primeController,
+            todoController
         });
 
 
@@ -119,3 +124,5 @@ describe("test product routes", () => {
 
     });
 });
+
+
