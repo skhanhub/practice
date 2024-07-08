@@ -48,7 +48,6 @@ describe("test product routes", () => {
         const productOptionRepository = new ProductsOptionRepository({} as any);
 
         const createWorker = new CreateWorkerFindPrimeNumber();
-        const apiClient = getAPIClient("https://test.com");
 
         const paymentController = new PaymentController();
         const productController = new ProductController(productRepository);

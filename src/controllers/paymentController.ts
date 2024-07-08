@@ -6,6 +6,7 @@ import BadRequestError from "../errors/BadRequestError";
 import PaypalProcessor from "../services/paymentService/paypalProcessor";
 import IPaymentProcessor from "../services/paymentService/IPaymentProcessor";
 import { IsEmail, IsNotEmpty, ValidateIf, ValidationError, validateOrReject } from "class-validator";
+import { StatusCodes } from "http-status-codes";
 
 interface IPaymentParams {
     email?: string;
@@ -38,7 +39,7 @@ export default class PaymentController {
         paymentService.setProcessor(paymentProcessor);
 
         paymentService.processOrder();
-        res.status(200).send();
+        res.status(StatusCodes.OK).send();
 
     }
 }
